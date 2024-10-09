@@ -3,10 +3,19 @@ import React from 'react';
 function MyButton({ text = "Button" }: { text: string }) {
     return (
         <div className="relative inline-block">
-            {/* Button content */}
-            <button className="relative z-10 py-2 px-6 font-bold text-white bg-neonSunset transform skew-x-[30deg] hover:bg-electricDream hover:shadow-lg transition-all">
-                <span className="inline-block transform -skew-x-[30deg]">{text}</span>
-            </button>
+            {/* Button container */}
+            <div className="relative inline-flex items-center group">
+                {/* Left right triangle */}
+                <div className="w-0 h-0 border-t-[40px] border-t-transparent border-b-0 border-r-[35px] border-r-neonSunset mr-[3px] group-hover:mr-[6px] transition-all duration-300"></div>
+
+                {/* Middle rectangle */}
+                <button className="py-2 px-6 font-bold text-white bg-neonSunset hover:bg-electricDream hover:shadow-lg transition-all duration-300">
+                    {text}
+                </button>
+
+                {/* Right right triangle */}
+                <div className="w-0 h-0 border-b-[40px] border-b-transparent border-t-0 border-l-[35px] border-l-neonSunset ml-[3px] group-hover:ml-[6px] transition-all duration-300"></div>
+            </div>
         </div>
     );
 }
