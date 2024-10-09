@@ -9,7 +9,7 @@ function App() {
           Retrofuture component library
         </h1>
         <br />
-        <Button />
+        <Button text="Button Text" />
       </div>
     </div>
   );
