@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from './components/Button';
+import TextInput from './components/TextInput';
 
 function App() {
   return (
@@ -10,6 +11,10 @@ function App() {
         </h1>
         <br />
         <Button text="Button Text" />
+        <br />
+        <div>
+          <TextInput />
+        </div>
       </div>
     </div>
   );
