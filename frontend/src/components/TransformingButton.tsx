@@ -1,22 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-interface TransformingButtonProps {
-  leftInput?: string;
-  rightInput?: string;
+// This is a more functional approach to the trapezoid problem
+// There's room to optimize this, but the goal is this could make the code more modular and easy to work with
+
+// Utility Functions
+const getBaseWidth = (): number => {
+  return 2.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+};
+
+const getHeight = (baseWidth: number): number => {
+  return baseWidth * Math.sqrt(3);
+};
+
+const calculateWidth = (input: string, baseWidth: number): number => {
+  const paddedLength = Math.max(input.length + 4, 4);
+  return Math.max(baseWidth, paddedLength * 12);
+};
+
+const getTrapezoidStyle = (
+  width: number,
+  isLeft: boolean,
+  baseWidth: number,
+  height: number
+): React.CSSProperties => {
+  const isTriangle = width === baseWidth;
+  const sideLength = isTriangle ? width / 2 : height / Math.sqrt(3);
+
+  return {
+    width: `${width}px`,
+    height: `${height}px`,
+    borderLeftWidth: `${sideLength}px`,
+    borderRightWidth: `${sideLength}px`,
+    borderTopWidth: isLeft ? "0" : `${height}px`,
+    borderBottomWidth: isLeft ? `${height}px` : "0",
+  };
+};
+
+// TextOverlay Component
+interface TextOverlayProps {
+  text: string;
+  isLeft: boolean;
+  buttonHeight: number;
 }
 
-const TextOverlay: React.FC<{ text: string; isLeft: boolean; buttonHeight: number }> = ({
-  text,
-  isLeft,
-  buttonHeight,
-}) => {
+const TextOverlay: React.FC<TextOverlayProps> = ({ text, isLeft, buttonHeight }) => {
   const baseClasses =
     "absolute text-black whitespace-nowrap transition-all duration-300 flex items-center justify-center inset-0 m-auto";
   const positionClasses = isLeft
     ? "left-0 bottom-0 w-full h-full"
     : "right-0 top-0 w-full h-full";
 
-  const verticalOffset = (buttonHeight) / 2 * (isLeft ? 1 : -1);
+  const verticalOffset = (buttonHeight / 2) * (isLeft ? 1 : -1);
 
   return (
     <div
@@ -31,73 +65,74 @@ const TextOverlay: React.FC<{ text: string; isLeft: boolean; buttonHeight: numbe
   );
 };
 
-const TransformingButton: React.FC<TransformingButtonProps> = ({
-  leftInput = "",
-  rightInput = "",
-}) => {
-  const baseWidth = 2.5 * parseFloat(getComputedStyle(document.documentElement).fontSize); // Width of the equilateral triangle
-  const height = baseWidth * Math.sqrt(3); // Height of the triangle/trapezoid
+// Trapezoid Component
+interface TrapezoidProps {
+  width: number;
+  isLeft: boolean;
+  baseWidth: number;
+  height: number;
+  children?: React.ReactNode;
+}
 
-  const getWidth = (input: string) => {
-    const paddedInput = input.length > 0 ? input.padStart(input.length + 4, ' ') : ' '.repeat(4);
-    return paddedInput.length <= 1 ? baseWidth : Math.max(baseWidth, paddedInput.length * 12);
-  };
+const Trapezoid: React.FC<TrapezoidProps> = ({ width, isLeft, baseWidth, height, children }) => {
+  const style = getTrapezoidStyle(width, isLeft, baseWidth, height);
 
-  const leftWidth = getWidth(leftInput);
-  const rightWidth = getWidth(rightInput);
+  const baseClasses = `
+    relative border-l-[24px] border-r-[24px] 
+    border-solid border-transparent 
+    transition-all duration-300
+    before:content-[''] 
+    before:absolute 
+    ${isLeft ? "before:bottom-0 before:border-b" : "before:top-0 before:border-t"}-[48px] 
+    before:border-l-0 before:border-r-0 
+    before:border-solid 
+    before:border-transparent 
+    ${isLeft ? "border-b-neonSunset before:border-b-neonSunset" : "border-t-neonSunset before:border-t-neonSunset"}
+    hover:${isLeft ? "border-b-electricDream before:border-b-electricDream" : "border-t-electricDream before:border-t-electricDream"}
+    before:transition-all before:duration-300
+  `;
 
-  const getTrapezoidStyle = (width: number, isLeft: boolean) => {
-    const isTriangle = width === baseWidth;
-    const sideLength = isTriangle ? width / 2 : height / Math.sqrt(3);
-    const topWidth = isTriangle ? 0 : width - 2 * sideLength;
+  const additionalStyle = isLeft
+    ? {}
+    : { marginLeft: `-${height * .5}px` };
 
-    return {
-      width: `${width}px`,
-      height: `${height}px`, // Add explicit height
-      borderLeftWidth: `${sideLength}px`,
-      borderRightWidth: `${sideLength}px`,
-      borderTopWidth: isLeft ? "0" : `${height}px`,
-      borderBottomWidth: isLeft ? `${height}px` : "0",
-      ...(isTriangle ? {} : { "::before": { width: `${topWidth}px` } }),
-    };
-  };
+  return (
+    <div className={baseClasses} style={{ ...style, ...additionalStyle }}>
+      {children}
+    </div>
+  );
+};
+
+// TransformingButton Component
+interface TransformingButtonProps {
+  leftInput?: string;
+  rightInput?: string;
+}
+
+const TransformingButton: React.FC<TransformingButtonProps> = ({ leftInput = "", rightInput = "" }) => {
+  const [baseWidth, setBaseWidth] = useState<number>(2.5 * 16); // default to 16px if not yet set
+  const [height, setHeight] = useState<number>(0);
+
+  useEffect(() => {
+    const computedBaseWidth = getBaseWidth();
+    setBaseWidth(computedBaseWidth);
+    setHeight(getHeight(computedBaseWidth));
+  }, []);
+
+  const leftWidth = calculateWidth(leftInput, baseWidth);
+  const rightWidth = calculateWidth(rightInput, baseWidth);
 
   return (
     <div className="flex items-center justify-center h-12">
       {/* Left Triangle/Trapezoid */}
-      <div
-        className={`
-          relative border-l-[24px] border-r-[24px] 
-          border-solid border-transparent border-b-neonSunset
-          hover:border-b-electricDream transition-all duration-300
-          before:content-[''] before:absolute before:bottom-0 before:left-[-24px] 
-          before:h-0 before:border-b-[48px] before:border-l-0 before:border-r-0 
-          before:border-solid before:border-transparent before:border-b-neonSunset
-          hover:before:border-b-electricDream before:transition-all before:duration-300
-        `}
-        style={getTrapezoidStyle(leftWidth, true)}
-      >
+      <Trapezoid width={leftWidth} isLeft={true} baseWidth={baseWidth} height={height}>
         {leftInput && <TextOverlay text={leftInput} isLeft={true} buttonHeight={height} />}
-      </div>
+      </Trapezoid>
 
       {/* Right Triangle/Trapezoid */}
-      <div
-        className={`
-          relative border-l-[24px] border-r-[24px] 
-          border-solid border-transparent border-t-neonSunset
-          hover:border-t-electricDream transition-all duration-300
-          before:content-[''] before:absolute before:top-0 before:left-[-24px] 
-          before:h-0 before:border-t-[48px] before:border-l-0 before:border-r-0 
-          before:border-solid before:border-transparent before:border-t-neonSunset
-          hover:before:border-t-electricDream before:transition-all before:duration-300
-        `}
-        style={{
-          ...getTrapezoidStyle(rightWidth, false),
-          marginLeft: `-${height * 0.48}px`, // Offset to nest triangles/trapezoids
-        }}s
-      >
+      <Trapezoid width={rightWidth} isLeft={false} baseWidth={baseWidth} height={height}>
         {rightInput && <TextOverlay text={rightInput} isLeft={false} buttonHeight={height} />}
-      </div>
+      </Trapezoid>
     </div>
   );
 };
