@@ -1,5 +1,9 @@
 import React from 'react';
 
+export interface ButtonProps {
+     text: string,
+}
+
 function MyButton({ text = "Button" }: { text: string }) {
     return (
         <div className="relative inline-block">

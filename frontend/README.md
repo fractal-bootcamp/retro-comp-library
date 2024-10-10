@@ -1,50 +1,142 @@
-# React + TypeScript + Vite
+# Cyber UI Components
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A collection of cyberpunk-themed React components for building futuristic user interfaces. These components are designed to give your application a unique, neon-lit aesthetic inspired by the cyberpunk genre.
 
-Currently, two official plugins are available:
+Cyber UI relies on lucide-react and framer-motion, so you'll need to install those as well if you want CyberUI to be fully functional.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## Expanding the ESLint configuration
+To install the Cyber UI Components package, run the following command:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+`npm install cyber-ui-components lucide-react framer-motion`
 
-- Configure the top-level `parserOptions` property like this:
+or if you're using yarn:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+`yarn add cyber-ui-components lucide-react framer-motion`
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Components
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. TrizoidAccordion
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+An accordion component with a unique trizoid (triangular-trapezoid) design.
+
+Usage:
+import { TrizoidAccordion } from 'cyber-ui-components';
+
+const items = [
+  { title: 'Section 1', content: 'Content for section 1' },
+  { title: 'Section 2', content: 'Content for section 2' },
+];
+
+function MyComponent() {
+  return <TrizoidAccordion items={items} />;
+}
+
+Props:
+- items: An array of AccordionItem objects, each containing a title and content.
+
+2. TransformingButton
+
+A button component that transforms between triangular and trapezoidal shapes, creating a dynamic and futuristic look.
+
+Usage:
+import { TransformingButton } from 'cyber-ui-components';
+
+function MyComponent() {
+  return <TransformingButton leftInput="Click me" rightInput="▼" />;
+}
+
+Props:
+- leftInput: The text to display on the left side of the button.
+- rightInput: The text to display on the right side of the button.
+
+3. Dropdown
+
+A stylish dropdown component with a cyberpunk-inspired design, featuring neon colors and smooth transitions.
+
+Usage:
+import { Dropdown } from 'cyber-ui-components';
+
+const options = ['Option 1', 'Option 2', 'Option 3'];
+
+function MyComponent() {
+  return (
+    <Dropdown
+      label="Select an option"
+      options={options}
+      onSelect={(selected) => console.log(selected)}
+    />
+  );
+}
+
+Props:
+- label: The label for the dropdown.
+- options: An array of strings representing the selectable options.
+- onSelect: A callback function that receives the selected option.
+
+4. Button
+
+A futuristic button component with a unique shape and hover effects, perfect for call-to-action elements.
+
+Usage:
+import { Button } from 'cyber-ui-components';
+
+function MyComponent() {
+  return <Button text="Click me" />;
+}
+
+Props:
+- text: The text to display on the button.
+
+5. TextInput
+
+A customizable text input component with a cyberpunk aesthetic, featuring dynamic resizing and a shaking animation effect.
+
+Usage:
+import { TextInput } from 'cyber-ui-components';
+
+function MyComponent() {
+  return (
+    <TextInput
+      placeholder="Enter text"
+      onChange={(value) => console.log(value)}
+      size="large"
+    />
+  );
+}
+
+Props:
+- placeholder: The placeholder text for the input.
+- value: The current value of the input.
+- disabled: Whether the input is disabled.
+- onChange: A callback function that receives the new value when the input changes.
+- size: The size of the input, either "small" or "large".
+
+## Customization
+
+All components use Tailwind CSS classes for styling. You can customize the appearance by overriding these classes or by providing your own CSS. The components use a cyberpunk-inspired color palette, including:
+
+- neonSunset: A vibrant orange color
+- electricDream: A bright blue color
+- cyberAqua: A neon aqua color
+- midnightAbyss: A deep, dark background color
+- digitalVoid: A slightly lighter background color
+
+You can override these colors in your Tailwind configuration to match your desired aesthetic.
+
+## Browser Compatibility
+
+Cyber UI Components are designed to work with modern browsers that support ES6+ and CSS3. For optimal visual effects, we recommend using the latest versions of Chrome, Firefox, Safari, or Edge.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Changelog
+
+Version 1.0.0
+- Initial release with TrizoidAccordion, TransformingButton, Dropdown, Button, and TextInput components.

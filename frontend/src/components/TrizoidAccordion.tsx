@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TransformingButton from './TransformingButton';
 
-interface AccordionItem {
+export interface AccordionItem {
   title: string;
   content: string;
 }
