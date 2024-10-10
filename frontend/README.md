@@ -4,17 +4,19 @@ A collection of cyberpunk-themed React components for building futuristic user i
 
 ## Installation
 
-To install the Cyber UI Components package, run the following command:
+To install the Cyber UI Components package along with its dependencies, run the following command:
 
 ```bash
-npm install cyber-ui-components
+npm install cyber-ui-components lucide-react framer-motion react-icons
 ```
 
 or if you're using yarn:
 
 ```bash
-yarn add cyber-ui-components
+yarn add cyber-ui-components lucide-react framer-motion react-icons
 ```
+
+Cyber UI relies on lucide-react, framer-motion, and react-icons, so you'll need to install these packages for Cyber UI to be fully functional.
 
 ## Components
 

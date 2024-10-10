@@ -18,7 +18,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "declaration": true,                // Enable declaration file generation
+    "declarationMap": true,             // (Optional) Create .d.ts.map files for debugging
+    "emitDeclarationOnly": true,        // Only emit .d.ts files (no .js output)
   },
   "include": ["src"]
 }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import TrizoidAccordion from "../TrizoidAccordion";
 
-const meta = {
+const meta: any = {
   title: "Components/TrizoidAccordion",
   component: TrizoidAccordion,
   parameters: {
