@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import Button from './components/Button';
 import TextInput from './components/TextInput';
 import TransformingButton from './components/TransformingButton';
-import Dropdown from './components/Dropdown'; // Import the Dropdown component
+import Dropdown from './components/Dropdown';
 
 const App: React.FC = () => {
   const [rightText, setRightText] = useState<string>('');
-  const [selectedOption, setSelectedOption] = useState<string | null>(null); // State to store the selected dropdown option
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const handleDropdownSelect = (option: string) => {
-    setSelectedOption(option); // Update the selected option state when an option is selected
+    setSelectedOption(option);
+  };
+
+  const handleTextInputChange = (value: string) => {
+    setRightText(value);
   };
 
   return (
@@ -25,17 +29,15 @@ const App: React.FC = () => {
           <TextInput
             value={rightText}
             placeholder="Enter text"
-            onChange={(e) => setRightText(e.target.value)}
+            onChange={handleTextInputChange}
           />
         </div>
-        <TransformingButton leftInput={"leftText"} rightInput={"rightText"} />
-
-        {/* Add the Dropdown example */}
+        <TransformingButton leftInput={"leftText"} rightInput={rightText} />
         <div className="mt-8">
           <Dropdown
             label="Choose an option"
             options={['Option 1', 'Option 2', 'Option 3']}
-            onSelect={handleDropdownSelect} // Handle the option selection
+            onSelect={handleDropdownSelect}
           />
           {selectedOption && (
             <p className="mt-4 text-lg text-neonSunset">
