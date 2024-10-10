@@ -1,6 +1,5 @@
-import React from "react";
-import { Meta, Story } from "@storybook/react";
-import Dropdown, { DropdownProps } from "../Dropdown"; // adjust the path as necessary
+import { Meta, StoryFn } from "@storybook/react";
+import Dropdown from "../Dropdown"; // adjust the path as necessary
 
 export default {
   title: "Components/Dropdown",
@@ -9,9 +8,9 @@ export default {
     // Customize controls for props if needed
     onSelect: { action: "selected" },
   },
-} as Meta;
+} as Meta<typeof Dropdown>;
 
-const Template: Story<DropdownProps> = (args) => <Dropdown {...args} />;
+const Template: StoryFn<typeof Dropdown> = (args) => <Dropdown {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

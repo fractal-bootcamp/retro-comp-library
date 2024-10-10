@@ -1,5 +1,3 @@
-import React from 'react';
-
 import './button.css';
 
 export interface ButtonProps {
@@ -11,7 +9,7 @@ export interface ButtonProps {
   size?: 'small' | 'medium' | 'large';
   /** Button contents */
   label: string;
-  /** Optional click handler */
+  /** Optional click hanggVdler */
   onClick?: () => void;
 }
 
