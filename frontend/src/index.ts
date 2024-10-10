@@ -16,4 +16,4 @@ export type { TransformingButtonProps } from "./components/TransformingButton";
 // Utilities (if any)
 
 // Styles (if you have any global styles)
-import "./styles/index.css";
+import "./index.css";
