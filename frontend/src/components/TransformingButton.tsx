@@ -1,22 +1,29 @@
-import React from 'react';
+import React from "react";
 
 interface TransformingButtonProps {
   leftInput?: string;
   rightInput?: string;
 }
 
-const TextOverlay: React.FC<{ text: string; isLeft: boolean }> = ({ text, isLeft }) => {
-  const baseClasses = "absolute text-white text-xs whitespace-nowrap transition-all duration-300";
+const TextOverlay: React.FC<{ text: string; isLeft: boolean; buttonHeight: number }> = ({
+  text,
+  isLeft,
+  buttonHeight,
+}) => {
+  const baseClasses =
+    "absolute text-black whitespace-nowrap transition-all duration-300 flex items-center justify-center inset-0 m-auto";
   const positionClasses = isLeft
-    ? "left-0 bottom-0"
-    : "right-0 top-0";
+    ? "left-0 bottom-0 w-full h-full"
+    : "right-0 top-0 w-full h-full";
+
+  const verticalOffset = (buttonHeight) / 2 * (isLeft ? 1 : -1);
 
   return (
-    <div 
+    <div
       className={`${baseClasses} ${positionClasses}`}
-      style={{ 
-        transform: 'translateY(200%)',
-        zIndex: 1
+      style={{
+        transform: `translateY(${verticalOffset}px)`,
+        zIndex: 1,
       }}
     >
       {text}
@@ -24,10 +31,17 @@ const TextOverlay: React.FC<{ text: string; isLeft: boolean }> = ({ text, isLeft
   );
 };
 
-const TransformingButton: React.FC<TransformingButtonProps> = ({ leftInput = '', rightInput = '' }) => {
-  const baseWidth = 48; // Width of the equilateral triangle
-  const height = 48; // Height of the triangle/trapezoid
-  const getWidth = (input: string) => input.length <= 1 ? baseWidth : Math.max(baseWidth, input.length * 12);
+const TransformingButton: React.FC<TransformingButtonProps> = ({
+  leftInput = "",
+  rightInput = "",
+}) => {
+  const baseWidth = 2.5 * parseFloat(getComputedStyle(document.documentElement).fontSize); // Width of the equilateral triangle
+  const height = baseWidth * Math.sqrt(3); // Height of the triangle/trapezoid
+
+  const getWidth = (input: string) => {
+    const paddedInput = input.length > 0 ? input.padStart(input.length + 4, ' ') : ' '.repeat(4);
+    return paddedInput.length <= 1 ? baseWidth : Math.max(baseWidth, paddedInput.length * 12);
+  };
 
   const leftWidth = getWidth(leftInput);
   const rightWidth = getWidth(rightInput);
@@ -36,22 +50,22 @@ const TransformingButton: React.FC<TransformingButtonProps> = ({ leftInput = '',
     const isTriangle = width === baseWidth;
     const sideLength = isTriangle ? width / 2 : height / Math.sqrt(3);
     const topWidth = isTriangle ? 0 : width - 2 * sideLength;
-    
+
     return {
       width: `${width}px`,
       height: `${height}px`, // Add explicit height
       borderLeftWidth: `${sideLength}px`,
       borderRightWidth: `${sideLength}px`,
-      borderTopWidth: isLeft ? '0' : `${height}px`,
-      borderBottomWidth: isLeft ? `${height}px` : '0',
-      ...(isTriangle ? {} : { '::before': { width: `${topWidth}px` } }),
+      borderTopWidth: isLeft ? "0" : `${height}px`,
+      borderBottomWidth: isLeft ? `${height}px` : "0",
+      ...(isTriangle ? {} : { "::before": { width: `${topWidth}px` } }),
     };
   };
 
   return (
     <div className="flex items-center justify-center h-12">
       {/* Left Triangle/Trapezoid */}
-      <div 
+      <div
         className={`
           relative border-l-[24px] border-r-[24px] 
           border-solid border-transparent border-b-neonSunset
@@ -63,14 +77,11 @@ const TransformingButton: React.FC<TransformingButtonProps> = ({ leftInput = '',
         `}
         style={getTrapezoidStyle(leftWidth, true)}
       >
-        {leftInput && <TextOverlay text={leftInput} isLeft={true} />}
+        {leftInput && <TextOverlay text={leftInput} isLeft={true} buttonHeight={height} />}
       </div>
 
-      {/* Gap */}
-      <div className="w-2" />
-
       {/* Right Triangle/Trapezoid */}
-      <div 
+      <div
         className={`
           relative border-l-[24px] border-r-[24px] 
           border-solid border-transparent border-t-neonSunset
@@ -80,9 +91,12 @@ const TransformingButton: React.FC<TransformingButtonProps> = ({ leftInput = '',
           before:border-solid before:border-transparent before:border-t-neonSunset
           hover:before:border-t-electricDream before:transition-all before:duration-300
         `}
-        style={getTrapezoidStyle(rightWidth, false)}
+        style={{
+          ...getTrapezoidStyle(rightWidth, false),
+          marginLeft: `-${height * 0.48}px`, // Offset to nest triangles/trapezoids
+        }}s
       >
-        {rightInput && <TextOverlay text={rightInput} isLeft={false} />}
+        {rightInput && <TextOverlay text={rightInput} isLeft={false} buttonHeight={height} />}
       </div>
     </div>
   );
