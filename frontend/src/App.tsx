@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from './components/Button';
 import TextInput from './components/TextInput';
+import TransformingButton from './components/TransformingButton';
 
-function App() {
+const App: React.FC = () => {
+  const [rightText, setRightText] = useState<string>('');
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="text-center">
@@ -12,12 +15,17 @@ function App() {
         <br />
         <Button text="Button Text" />
         <br />
-        <div>
-          <TextInput />
+        <div className="mb-4">
+          <TextInput
+            value={rightText}
+            placeholder="Enter text"
+            onChange={(e) => setRightText(e.target.value)}
+          />
         </div>
+        <TransformingButton leftInput={"leftText"} rightInput={"rightText"} />
       </div>
     </div>
   );
-}
+};
 
 export default App;
