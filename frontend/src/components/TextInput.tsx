@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-type TextInputProps = {
+export type TextInputProps = {
     placeholder?: string;
     value?: string;
     disabled?: boolean;

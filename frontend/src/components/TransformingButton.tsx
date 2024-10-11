@@ -17,6 +17,8 @@ const calculateWidth = (input: string, baseWidth: number): number => {
   return Math.max(baseWidth, paddedLength * 12);
 };
 
+// can we make a style for a parallelogram ?
+
 const getTrapezoidStyle = (
   width: number,
   isLeft: boolean,
@@ -37,7 +39,7 @@ const getTrapezoidStyle = (
 };
 
 // TextOverlay Component
-interface TextOverlayProps {
+export interface TextOverlayProps {
   text: string;
   isLeft: boolean;
   buttonHeight: number;
@@ -52,7 +54,7 @@ const TextOverlay: React.FC<TextOverlayProps> = ({ text, isLeft, buttonHeight })
 
   const verticalOffset = (buttonHeight / 2) * (isLeft ? 1 : -1);
 
-  return (
+  return ( // Learn how this works
     <div
       className={`${baseClasses} ${positionClasses}`}
       style={{
@@ -66,7 +68,7 @@ const TextOverlay: React.FC<TextOverlayProps> = ({ text, isLeft, buttonHeight })
 };
 
 // Trapezoid Component
-interface TrapezoidProps {
+export interface TrapezoidProps {
   width: number;
   isLeft: boolean;
   baseWidth: number;
@@ -104,7 +106,7 @@ const Trapezoid: React.FC<TrapezoidProps> = ({ width, isLeft, baseWidth, height,
 };
 
 // TransformingButton Component
-interface TransformingButtonProps {
+export interface TransformingButtonProps {
   leftInput?: string;
   rightInput?: string;
 }

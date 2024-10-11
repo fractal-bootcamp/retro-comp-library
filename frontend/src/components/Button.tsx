@@ -1,5 +1,5 @@
 
-interface MyButtonProps {
+export interface MyButtonProps {
     text?: string;
     onClick?: () => void;
 }
@@ -26,5 +26,4 @@ function MyButton({ text = "Button", onClick }: MyButtonProps) {
         </div>
     );
 }
-
 export default MyButton;

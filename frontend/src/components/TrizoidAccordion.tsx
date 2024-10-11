@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TransformingButton from './TransformingButton';
 
-interface AccordionItem {
+export interface AccordionItem {
   title: string;
   content: string;
 }
@@ -18,13 +18,13 @@ const TrizoidAccordion: React.FC<TrizoidAccordionProps> = ({ items }) => {
     // Calculate the spacing based on TransformingButton's geometry
     const baseWidth = 2.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
     const height = baseWidth * Math.sqrt(3);
-        console.log(height)
-    
+    console.log(height)
+
     // Calculate the visual spacing that matches the horizontal overlap
     // This is approximately *(.37) of the height, which creates a visual balance
     //this needs to be refactored to compute 
     const calculatedSpacing = height * 0.37;
-    
+
     setSpacing(calculatedSpacing);
   }, []);
 
